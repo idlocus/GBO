@@ -3,8 +3,6 @@ package com.cicc.gbo.tps.enricher;
 import com.cicc.gbo.core.enricher.AbstractEnricher;
 import com.cicc.gbo.core.model.ProcessObject;
 import com.cicc.gbo.core.model.TransactionEntity;
-import com.cicc.gbo.core.shared.RecordRemarkConstants;
-import com.cicc.gbo.core.shared.RecordStatus;
 
 /**
  * @author Guo Hua
@@ -19,8 +17,7 @@ public class TransactionEnricher extends AbstractEnricher {
 				processTransaction.setPrimaryAccountLocation("BJ");
 			}
 		} catch (Exception e) {
-			processTransaction.setRecordStatus(RecordStatus.FAILURE.name());
-			processTransaction.setRecordRemark(RecordRemarkConstants.ERROR_TRANSACTION_CONDITION);
+			this.processException(processTransaction, e);
 			return false;
 		}
 		return true;

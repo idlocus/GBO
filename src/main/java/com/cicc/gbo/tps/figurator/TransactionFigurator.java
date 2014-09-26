@@ -6,8 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cicc.gbo.core.exception.BusinessErrorCode;
-import com.cicc.gbo.core.exception.BusinessException;
+import com.cicc.gbo.core.component.ProcessObjectService;
 import com.cicc.gbo.core.figurator.AbstractFigurator;
 import com.cicc.gbo.core.model.ProcessObject;
 import com.cicc.gbo.tps.model.Figuration;
@@ -22,6 +21,8 @@ public class TransactionFigurator extends AbstractFigurator {
 	
 	@Autowired
 	FigurationService figurationService;
+	@Autowired
+	ProcessObjectService processObjectService;
 
 	@Override
 	public boolean figure(Trade processTransaction,
@@ -32,12 +33,13 @@ public class TransactionFigurator extends AbstractFigurator {
 				List<Figuration> tradeFigurationList = figurationService.getFiguration(processTransaction);
 				figurationList.addAll(tradeFigurationList);
 			}
-			figurationService.createAndUpdate(figurationList);
-			return false;
+			processObjectService.addResultTransaction(processObject, figurationList);
+			//figurationService.createAndUpdate(figurationList);
 		} catch (Exception e) {
-			this.processException(processTransaction, new BusinessException(BusinessErrorCode.UN_KNOWN_Template_IN_FIGURATOR));
+			this.processException(processTransaction, e);
 			return false;
 		}
+		return true;
 	}
 
 }

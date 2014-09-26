@@ -104,19 +104,19 @@
           #set( $title = "" )
           colNames:[ 'ID'#foreach($propertyDesc in ${beanDesc.propertyList})#if(${propertyDesc.name}!='entityId'&&${propertyDesc.name}!='versionNumber'&&${propertyDesc.name}!='createdBy'&&${propertyDesc.name}!='insertTime'&&${propertyDesc.name}!='updatedBy'&&${propertyDesc.name}!='lastUpdateTime')#set($title="$title,'${propertyDesc.displayName}'")#end#end$title,'Version','InsertTime','CreatedBy','UpdatedBy','LastUpdateTime'],
           colModel :[
-         {name:'entityId', index:'entityId', width:${dollar}{widthMap.entityId!'50'},xmlmap:"entityId",fixed:true, hidden:${dollar}{hiddenMap.entityId!'false'},editable: false,align:"center"},    
+         	{name:'entityId', index:'entityId', width:${dollar}{widthMap.entityId!'50'},xmlmap:"entityId",fixed:true, hidden:${dollar}{hiddenMap.entityId!'false'},editable: false,align:"center"},    
          
       #foreach( $propertyDesc in ${beanDesc.propertyList} )
       #if (${propertyDesc.name} != 'entityId'&& ${propertyDesc.name} != 'versionNumber' && ${propertyDesc.name} != 'createdBy' && ${propertyDesc.name} != 'insertTime' && ${propertyDesc.name} != 'updatedBy' && ${propertyDesc.name} != 'lastUpdateTime')      
-    {name:'${propertyDesc.name}', index:'${propertyDesc.name}', width:${dollar}{widthMap.${propertyDesc.name}!'100'},xmlmap:"${propertyDesc.name}",fixed:true, hidden:${dollar}{hiddenMap.${propertyDesc.name}!'false'}, editable: true, #if((${propertyDesc.simpleType}=='Date')||(${propertyDesc.hasDict}))searchoptions:{dataInit:${propertyDesc.name}DataInit},#end align:"${propertyDesc.align4ftl}"}, 
+    		{name:'${propertyDesc.name}', index:'${propertyDesc.name}', width:${dollar}{widthMap.${propertyDesc.name}!'100'},xmlmap:"${propertyDesc.name}",fixed:true, hidden:${dollar}{hiddenMap.${propertyDesc.name}!'false'}, editable: true, #if((${propertyDesc.simpleType}=='Date')||(${propertyDesc.hasDict}))searchoptions:{dataInit:${propertyDesc.name}DataInit},#end align:"${propertyDesc.align4ftl}"}, 
       #end
       #end
       
-         {name:'versionNumber', index:'versionNumber', width:100,xmlmap:"versionNumber",fixed:true,hidden:true, editable: true},            
-         {name:'insertTime', index:'insertTime', width:100,xmlmap:"insertTime",fixed:true,hidden:true, editable: true}, 
-         {name:'createdBy', index:'createdBy', width:100,xmlmap:"createdBy",fixed:true, hidden:true,editable: true}, 
-         {name:'updatedBy', index:'updatedBy', width:100,xmlmap:"updatedBy",fixed:true, hidden:true,editable: true}, 
-         {name:'lastUpdateTime', index:'lastUpdateTime', width:100,xmlmap:"lastUpdateTime",fixed:true, hidden:true,editable: true}
+         	{name:'versionNumber', index:'versionNumber', width:100,xmlmap:"versionNumber",fixed:true,hidden:true, editable: true},            
+         	{name:'insertTime', index:'insertTime', width:100,xmlmap:"insertTime",fixed:true,hidden:true, editable: true}, 
+         	{name:'createdBy', index:'createdBy', width:100,xmlmap:"createdBy",fixed:true, hidden:true,editable: true}, 
+         	{name:'updatedBy', index:'updatedBy', width:100,xmlmap:"updatedBy",fixed:true, hidden:true,editable: true}, 
+         	{name:'lastUpdateTime', index:'lastUpdateTime', width:100,xmlmap:"lastUpdateTime",fixed:true, hidden:true,editable: true}
  
           ],
           

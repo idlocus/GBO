@@ -70,6 +70,7 @@ public class TradeService extends BaseServiceImpl {
 			for (Trade trade : tradeList) {
 				String identifier = getIdentifier(Trade.class);
 				trade.setInternalRecordId(identifier);
+				trade.setTransactionId(identifier);
 				
 				List<Trade> activeList = this.queryParentTrades(trade);
 				if (CollectionUtils.isNotEmpty(activeList)) {

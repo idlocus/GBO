@@ -15,9 +15,13 @@ public class AccountValidator extends AbstractValidator {
 	@Override
 	public boolean validate(TransactionEntity processTransaction, 
 			ProcessObject processObject) {
-		if (processTransaction.getVersusAccountId() == null) {
-			processTransaction.setRecordStatus(RecordStatus.INVALID.name());
-			processTransaction.setRecordRemark(RecordRemarkConstants.INVALID_ACCT_FIELD);
+		try {
+			if (processTransaction.getVersusAccountId() == null) {
+				processTransaction.setRecordStatus(RecordStatus.INVALID.name());
+				processTransaction.setRecordRemark(RecordRemarkConstants.INVALID_ACCT_FIELD);
+			}
+		} catch (Exception e) {
+			this.processException(processTransaction, e);
 		}
 		return true;
 	}

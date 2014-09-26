@@ -13,6 +13,11 @@ public class ProductValidator extends AbstractValidator {
 	@Override
 	public boolean validate(TransactionEntity processTransaction, 
 			ProcessObject processObject) {
+		try {
+			
+		} catch (Exception e) {
+			this.processException(processTransaction, e);
+		}
 		return true;
 	}
 }

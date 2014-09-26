@@ -29,10 +29,10 @@ public class TransactionCapturer extends AbstractCapturer {
 	public boolean capture(TransactionEntity processTransaction, ProcessObject processObject) {
 		try {
 			if (autoSave) {
-				transactionBaseService.createAndUpdate(processTransaction);
+				//transactionBaseService.createAndUpdate(processTransaction);
 			}
-		} catch (Throwable e) {
-			
+		} catch (Exception e) {
+			this.processException(processTransaction, e);
 		}
 		return true;
 	}

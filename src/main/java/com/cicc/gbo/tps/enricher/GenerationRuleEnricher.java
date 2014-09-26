@@ -44,7 +44,7 @@ public class GenerationRuleEnricher extends AbstractEnricher {
 	@Override
 	public boolean enrich(TransactionEntity processTransaction, 
 			ProcessObject processObject) {
-			try {
+		try {
 				Map<String, Object> conditionFields = conditionFieldService.loadAllConditionField(ProcessConstants.CATEGORY_VALUE);
 				Map<Map<String, String>, ConditionMap> conditionMaps = conditionMapService.loadAllConditionMap(ProcessConstants.CATEGORY_VALUE);
 				if (MapUtils.isEmpty(conditionMaps)) { 
@@ -107,14 +107,14 @@ public class GenerationRuleEnricher extends AbstractEnricher {
 				}
 				if (templateGroupId != null) {
 					processTransaction.setTemplateGroupId(templateGroupId);
-					return true;
 				} else {
 					this.processException(processTransaction, new BusinessException(BusinessErrorCode.UN_KNOWN_Template_IN_ENRICH));
 					return false;
 				}
 		} catch (Exception e) {
-			this.processException(processTransaction, new BusinessException(BusinessErrorCode.UN_KNOWN_Template_IN_ENRICH));
+			this.processException(processTransaction, e);
 			return false;
 		}
+		return true;
 	}
 }

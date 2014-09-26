@@ -10,7 +10,7 @@ import com.cicc.gbo.core.model.ProcessObject;
  * @author Guo Hua
  * @version 下午2:40:22 2014年9月10日 
  */
-public class WorkFlowLocatorImpl implements WorkFlowLocator {
+public class AbstractWorkFlowLocator implements WorkFlowLocator {
 	List<WorkFlow> workFlowList;
 	HashMap<String, List<WorkFlow>> workFlowMap = new HashMap<String, List<WorkFlow>>();
 	

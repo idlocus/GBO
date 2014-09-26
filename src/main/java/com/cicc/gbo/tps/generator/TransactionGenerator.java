@@ -52,7 +52,7 @@ public class TransactionGenerator extends AbstractGenerator {
 						tradeList.add(trade);
 					}
 					processObjectService.addResultTransaction(processObject, tradeList);
-					tradeService.createAndUpdate(tradeList);
+					//tradeService.createAndUpdate(tradeList);
 				} catch (Exception e) {
 					processException(processTransaction, e);
 					return false;
@@ -62,7 +62,7 @@ public class TransactionGenerator extends AbstractGenerator {
 			}
 			return true;
 		} catch (Exception e) {
-			this.processException(processTransaction, new BusinessException(BusinessErrorCode.UN_KNOWN_Template_IN_ENRICH));
+			this.processException(processTransaction, new BusinessException(BusinessErrorCode.UN_KNOWN_Template_IN_GENERATE));
 			return false;
 		}
 	}

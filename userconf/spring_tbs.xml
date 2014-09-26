@@ -42,6 +42,11 @@
 							<ref bean="transactionFigurator" />
 						</list>
 					</property>
+					<property name="postProcessList">
+						<list>
+							<ref bean="transactionPostProcessor" />
+						</list>
+					</property>
 				</bean>
 			</list>
 		</property>
@@ -55,7 +60,7 @@
 	<bean id="generationRuleEnricher" class="com.cicc.gbo.tps.enricher.GenerationRuleEnricher" />
 	<bean id="transactionGenerator" class="com.cicc.gbo.tps.generator.TransactionGenerator" />
 	<bean id="transactionFigurator" class="com.cicc.gbo.tps.figurator.TransactionFigurator" />
-        
+    <bean id="transactionPostProcessor" class="com.cicc.gbo.tps.process.TransactionPostProcessor" />
     <!-- Active MQ Configuration -->
 	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="${activemq.hkgmo.url}" />

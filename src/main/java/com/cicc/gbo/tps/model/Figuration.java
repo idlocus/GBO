@@ -3,13 +3,9 @@ package com.cicc.gbo.tps.model;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import com.cicc.gbo.core.model.AuditableEntity;
+import com.cicc.gbo.core.model.TransactionBaseEntity;
 
 /**
  * @author Guo Hua
@@ -17,14 +13,13 @@ import com.cicc.gbo.core.model.AuditableEntity;
  */
 @Entity
 @Table(name="GBO_FIGURATION")
-public class Figuration extends AuditableEntity {
+public class Figuration extends TransactionBaseEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 670636993089723187L;
 
-	String transactionId;
 	String feeId;
 	String feeCode;
 	String feeName;
@@ -39,23 +34,6 @@ public class Figuration extends AuditableEntity {
 	Long figurationPrecision;
 	BigDecimal figurationAmount;
 	
-	@Id
-	@GeneratedValue(generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
-	public Long getEntityId() {
-		return entityId;
-	}
-
-	public void setEntityId(Long entityId) {
-		this.entityId = entityId;
-	}
-	
-	public String getTransactionId() {
-		return transactionId;
-	}
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
 	public String getFeeId() {
 		return feeId;
 	}
