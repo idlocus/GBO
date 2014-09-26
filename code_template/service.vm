@@ -1,0 +1,49 @@
+#if (${beanDesc.targetPackage} == 'NoPackage')
+package com.cicc.gaf.service;
+#else
+package com.cicc.gbo.${beanDesc.targetPackage}.service;
+#end
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cicc.gaf.dao.GenericDao;
+import com.cicc.gaf.pagesort.Pagination;
+
+#if (${beanDesc.targetPackage} == 'NoPackage')
+import com.cicc.gaf.model.${beanDesc.targetClassName};
+#else
+import com.cicc.gbo.${beanDesc.targetPackage}.model.${beanDesc.targetClassName};
+import com.cicc.gbo.core.service.BaseServiceImpl;
+#end
+
+@Service
+public class ${beanDesc.targetClassName}Service extends BaseServiceImpl {
+	@Autowired
+	GenericDao genericDao;
+	
+	public Long create(${beanDesc.targetClassName} ${beanDesc.lowercaseTargetClassName}) {
+		return (Long) genericDao.save(${beanDesc.lowercaseTargetClassName});
+	}
+	
+	public void update(${beanDesc.targetClassName} ${beanDesc.lowercaseTargetClassName}) {
+		genericDao.update(${beanDesc.lowercaseTargetClassName});
+	}
+	
+	public void delete(Long id) {
+		${beanDesc.targetClassName} ${beanDesc.lowercaseTargetClassName} = genericDao.get(${beanDesc.targetClassName}.class, id);
+		genericDao.delete(${beanDesc.lowercaseTargetClassName});
+	}
+	
+	public ${beanDesc.targetClassName} read(Long id) {
+		return genericDao.get(${beanDesc.targetClassName}.class, id);
+	}
+
+	public List<${beanDesc.targetClassName}> listByExample(${beanDesc.targetClassName} ${beanDesc.lowercaseTargetClassName},Pagination initJqgridPagination) {
+		List<${beanDesc.targetClassName}> ${beanDesc.lowercaseTargetClassName}List = genericDao.queryByExample(${beanDesc.targetClassName}.class, ${beanDesc.lowercaseTargetClassName}, initJqgridPagination);
+		return ${beanDesc.lowercaseTargetClassName}List;
+	}
+
+}

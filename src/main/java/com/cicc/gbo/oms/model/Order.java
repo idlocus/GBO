@@ -6,7 +6,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.cicc.gbo.tps.model.TransactionEntity;
+import com.cicc.gbo.core.model.TransactionEntity;
 
 /**
  * @author Guo Hua

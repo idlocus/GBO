@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">  
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="null" threshold="null">
+
+   <appender name="Console" class="org.apache.log4j.ConsoleAppender">
+      <param name="Target" value="System.out"/>
+      <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS} [%t] %-5p %c]: %m%n"/>
+      </layout>
+   </appender>
+
+   <appender name="logFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+     <param name="File" value="${catalina.home}/logs/gaf.log"/>
+     <param name="Append" value="true"/>
+     <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+     <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS} [%t] %-5p %c]: %m%n"/>
+     </layout>
+   </appender>
+
+   <appender name="hibernateLogFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+     <param name="File" value="${catalina.home}/logs/gaf_hibernate.log"/>
+     <param name="Append" value="true"/>
+     <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+     <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS} [%t] %-5p %c]: %m%n"/>
+     </layout>
+   </appender>
+
+   <appender name="springLogFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+     <param name="File" value="${catalina.home}/logs/gaf_spring.log"/>
+     <param name="Append" value="true"/>
+     <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+     <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %c]: %m%n"/>
+     </layout>
+   </appender>
+
+
+   <logger name="org.hibernate" additivity="true">
+      <level value="info"></level>
+      <appender-ref ref="hibernateLogFileAppender"/>
+   </logger>
+   
+   <logger name="org.springframework" additivity="true">
+      <level value="info"></level>
+      <appender-ref ref="springLogFileAppender"/>
+   </logger>
+   
+   <logger name="com.cicc.gaf" additivity="true">
+      <level value="info"></level>
+      <appender-ref ref="logFileAppender"/>
+   </logger>
+
+   <root>
+      <priority value="debug" />
+      <appender-ref ref="Console" />
+   </root>
+
+</log4j:configuration>

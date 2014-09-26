@@ -1,0 +1,5 @@
+<decorators defaultdir="/WEB-INF/views/gaf/decorators"> 
+       <decorator name="decorator" page="menuDecorator.jsp"> 
+
+       </decorator> 
+</decorators>

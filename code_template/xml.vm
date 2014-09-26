@@ -1,0 +1,36 @@
+#set( $numFormat = "#" )
+#set( $dollar = "$" )
+<#import "/gaf/common.ftl" as common/>
+<#compress>
+<response>
+<@common.jqGridContext/>
+  <rows>
+   <#escape x as x?xml>
+    <#list entityList as ${beanDesc.lowercaseTargetClassName}>
+      <row>
+       #foreach( $propertyDesc in ${beanDesc.propertyList} )
+        #if (${propertyDesc.name} != 'entityId')
+        #if (${propertyDesc.hasDict})
+         #if (${beanDesc.targetPackage} == 'NoPackage')
+<${propertyDesc.name}>${dollar}{common.getValueByKey("com.cicc.gaf.model.${beanDesc.targetClassName}","get${propertyDesc.methodName}",${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}!'')}</${propertyDesc.name}>     
+         #else
+         <${propertyDesc.name}>${dollar}{common.getValueByKey("com.cicc.gaf.${beanDesc.targetPackage}.model.${beanDesc.targetClassName}","get${propertyDesc.methodName}",${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}!'')}</${propertyDesc.name}>     
+         #end
+        #elseif (${propertyDesc.hasNumberFormat})
+<${propertyDesc.name}><\#if ${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}?exists>${${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}?string("${propertyDesc.numFormatPattern}")}</\#if></${propertyDesc.name}>        
+        #elseif (${propertyDesc.simpleType} == 'Date')
+<${propertyDesc.name}><\#if ${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}?exists>${${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}?string("yyyy-MM-dd")}</\#if></${propertyDesc.name}>
+        #elseif (${propertyDesc.simpleType} == 'Boolean' || ${propertyDesc.simpleType} == 'boolean')
+<${propertyDesc.name}><\#if ${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}?exists>${${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}?string('Y','N')}</\#if></${propertyDesc.name}>     
+        #else 
+<${propertyDesc.name}>${${beanDesc.lowercaseTargetClassName}.${propertyDesc.name}!''}</${propertyDesc.name}>     
+        #end
+      #end
+      #end
+      <entityId><\#if ${beanDesc.lowercaseTargetClassName}.entityId?exists>${${beanDesc.lowercaseTargetClassName}.entityId?c}</\#if></entityId>
+  </row>
+    </#list>
+   </#escape>
+  </rows>
+</response>
+</#compress>  

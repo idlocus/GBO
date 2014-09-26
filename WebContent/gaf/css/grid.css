@@ -1,0 +1,38 @@
+.container {
+	padding-right: 15px;
+	padding-left: 15px;
+	/* padding-bottom:10px; */
+}
+
+h4 {
+	margin-top: 25px;
+}
+
+.row { /*   margin-bottom: 20px; */
+	
+}
+
+.row .row {
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+
+[class *="col-"] { /*  background-color: #eee;
+  background-color: rgba(86,61,124,.15); */
+	/* border: 1px solid #ddd;
+  border: solid rgba(86,61,124,.2); */
+	/*  border-top-width: 1px; */
+	border-bottom-width: 1px;
+	/* border-top-style: solid; */
+	border-bottom-style: solid;
+	/* border-top-color: rgba(86,61,124,.2); */
+	border-bottom-color: rgba(86, 61, 124, .2);
+}
+
+.col-public-service {
+	padding-left: 700px;
+}
+
+.navbar-nav>li>a {
+	padding-bottom: 25px;
+}

@@ -1,0 +1,24 @@
+.ui-layout-resizer{
+	border-left: 1px solid #a6c9e2;
+	border-right: 1px solid #a6c9e2;
+	background-color: #dfeffc;
+	margin: 0px !important;
+}
+.ui-layout-resizer:hover{
+	BACKGROUND: #a6c9e2;
+}
+
+.ui-layout-toggler{
+	background-color: #a6c9e2;
+	background-repeat: no-repeat;
+	background-image: url(images/toggle-rt.gif);
+	background-position: center center;
+}
+
+.ui-layout-toggler:hover{
+	background-color: #dfeffc;
+}
+.ui-layout-toggler-open{
+	background-image: url(images/toggle-lt.gif);
+	background-position: center center;
+}

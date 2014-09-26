@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="  
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd  
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
+            http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+            http://www.springframework.org/schema/mvc  
+		    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		    http://www.springframework.org/schema/jms 
+		    http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		    http://activemq.apache.org/schema/core 
+            http://activemq.apache.org/schema/core/activemq-core.xsd"
+	default-lazy-init="true">
+	
+        
+	<bean id="transactionProcessService" class="com.cicc.gbo.tps.component.TransactionProcessService" init-method="start">
+		<property name="workFlowLocator" ref="workFlowLocatorBean" />
+	</bean>
+
+	<bean id="workFlowLocatorBean" class="com.cicc.gbo.tps.process.TransactionWorkFlowLocator">
+		<property name="workFlowList">
+			<list>
+				<bean id="defaultWorkflow" class="com.cicc.gbo.tps.process.TransactionWorkFlow">
+					<property name="workFlowName" value="Hong Kong Agency Trading" />
+					<property name="processList">
+						<list>
+							<ref bean="transactionCapturer" />
+							<ref bean="transactionValidator" />
+							<ref bean="transactionEnricher" />
+							<ref bean="generationRuleEnricher" />
+							<ref bean="transactionGenerator" />
+							<ref bean="transactionFigurator" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="transactionCapturer" class="com.cicc.gbo.tps.capturer.TransactionCapturer">
+		<property name="autoSave" value="true" />
+	</bean>
+	<bean id="transactionValidator" class="com.cicc.gbo.tps.validator.TransactionValidator" />
+	<bean id="transactionEnricher" class="com.cicc.gbo.tps.enricher.TransactionEnricher" />
+	<bean id="generationRuleEnricher" class="com.cicc.gbo.tps.enricher.GenerationRuleEnricher" />
+	<bean id="transactionGenerator" class="com.cicc.gbo.tps.generator.TransactionGenerator" />
+	<bean id="transactionFigurator" class="com.cicc.gbo.tps.figurator.TransactionFigurator" />
+        
+    <!-- Active MQ Configuration -->
+	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${activemq.hkgmo.url}" />
+	</bean>
+	
+	<bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="targetConnectionFactory" />
+	</bean>
+	
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<!-- JMS Listener Configuration -->
+	<bean id="orderTopicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="${activemq.hkgmo.order.topic}" />
+	</bean>
+	<bean id="executionTopicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="${activemq.hkgmo.execution.topic}" />
+	</bean>
+	<bean id="tpsMessageProducer" class="com.cicc.gbo.message.producer.TpsMessageProducer" />
+	<bean id="fidessaFixParser" class="com.cicc.gbo.message.parser.FidessaFixParser" />
+	<bean id="jmsExceptionHandler" class="com.cicc.gbo.core.exception.JmsExceptionHandler" />
+	<bean id="gmoMessageListener" class="com.cicc.gbo.message.listener.GmoMessageListener">
+		<property name="brokerUrl" value="${activemq.hkgmo.url}" />
+		<property name="transactionProcessService" ref="transactionProcessService" />
+		<property name="tpsMessageProducer" ref="tpsMessageProducer" />
+		<property name="fidessaFixParser" ref="fidessaFixParser" />  
+	</bean>
+	<bean id="gmoOrderContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="destination" ref="orderTopicDestination" />
+		<property name="messageListener" ref="gmoMessageListener" />
+		<property name="errorHandler" ref="jmsExceptionHandler" />
+	</bean>
+	<bean id="gmoExecutionContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="destination" ref="executionTopicDestination" />
+		<property name="messageListener" ref="gmoMessageListener" />
+		<property name="errorHandler" ref="jmsExceptionHandler" />
+	</bean>
+	
+	<!-- JMS Producer Configuration -->
+	<bean id="topicDistirbution" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="${activemq.tps.messaging.trade.topic}" />
+	</bean>
+    <bean id="jmsProducerTemplate" class="org.springframework.jms.core.JmsTemplate"
+		p:connectionFactory-ref="connectionFactory" p:defaultDestination-ref="topicDistirbution" />
+	<bean id="tsMessageProducerBean" class="com.cicc.gbo.message.producer.TpsMessageProducer">
+		<!-- <property name="transactionProcessingService" ref="service" /> -->
+		<property name="template" ref="jmsProducerTemplate" />
+	</bean>
+        
+</beans>

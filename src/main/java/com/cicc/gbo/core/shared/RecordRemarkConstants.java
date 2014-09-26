@@ -8,6 +8,9 @@ public class RecordRemarkConstants {
 	public static final String INVALID_ACCT_FIELD = "Invalid account info!";
 	public static final String ERROR_GENERATE_TRADES = "Error generate trades!";
 	
+	public static final String UPDATE_RECORD = "Update the record!";
+	public static final String DELETE_RECORD = "Delete the record!";
+	
 	public static final String ERROR_TRANSACTION_CONDITION = "Couldn't found the suitable condition!";
 	
 	public static final String ERROR_CAPTURE_TRANSACTION_TYPE = "Error transaction type in capturer!";

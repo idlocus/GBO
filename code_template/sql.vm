@@ -1,0 +1,158 @@
+///////////////////////////////////////////////////////////////////////////////////////////////// 
+
+
+#foreach( $beanDesc in ${beanDescList.beanDescList} ) 
+create table T_${beanDesc.staticTargetClassName}
+(
+      ENTITY_ID   NUMBER not null, -- Primary key 
+  #foreach( $propertyDesc in ${beanDesc.propertyList} )
+    #if (${propertyDesc.name} != 'entityId' && ${propertyDesc.name} != 'versionNumber' && ${propertyDesc.name} != 'createdBy' && ${propertyDesc.name} != 'insertTime' && ${propertyDesc.name} != 'updatedBy' && ${propertyDesc.name} != 'lastUpdateTime')
+${propertyDesc.staticName}  ${propertyDesc.simpleType4Db},
+    #end
+  #end 
+      VERSION_NUMBER NUMBER,   
+      INSERT_TIME  TIMESTAMP,
+      CREATED_BY  VARCHAR2(100),
+      UPDATED_BY  VARCHAR2(100),
+      LAST_UPDATE_TIME  TIMESTAMP
+);
+
+alter table T_${beanDesc.staticTargetClassName}
+  add constraint PK_T_${beanDesc.staticTargetClassName} primary key (ENTITY_ID)
+  using index;
+  
+CREATE sequence SEQ_${beanDesc.staticTargetClassName} 
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCYCLE
+CACHE 10; 
+ 
+ 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+declare
+  v_group_id number;
+
+begin
+
+  select seq_resource_group.nextval into v_group_id from dual;
+  insert into t_resource_group
+    (entity_id,
+     resource_group_caption,
+     parent_resource_group_id,
+     is_leaf,
+     display_order,
+     default_menu_id)
+  values
+    (v_group_id,
+     '${beanDesc.targetClassName}', /*may need to be changed*/
+     null, /*may need to be changed*/
+     1, /*may need to be changed*/
+     1, /*may need to be changed*/
+     null /*may need to be changed*/);
+
+-- for CRUD, 9 resources needed
+-- menu resource
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/list', 'GET', 0, /*may need to be changed*/'List ${beanDesc.targetClassName}s', 1);
+
+-- other resources
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/create', 'POST', 0, /*may need to be changed*/'Add ${beanDesc.targetClassName}s', 0);  
+
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/delete/{?}', 'POST', 0, /*may need to be changed*/'Delete ${beanDesc.targetClassName}s', 0);  
+
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/read/{?}', 'POST', 0, /*may need to be changed*/'Read ${beanDesc.targetClassName}s', 0);  
+
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/update', 'POST', 0, /*may need to be changed*/'Update ${beanDesc.targetClassName}s', 0);  
+
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/load', 'GET', 0, /*may need to be changed*/'Load ${beanDesc.targetClassName}s', 0);  
+
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/deleteGridSetting', 'GET', 0, /*may need to be changed*/'DeleteGridSetting ${beanDesc.targetClassName}s', 0);  
+
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/saveGridSetting', 'POST', 0, /*may need to be changed*/'SaveGridSetting ${beanDesc.targetClassName}s', 0);  
+
+insert into t_resource
+  (entity_id,
+   resource_group_id,
+   resource_name,
+   resource_operation,
+   default_resource,
+   resource_description_ui,
+   is_menu_resource)
+values
+  (seq_resource_id.nextval, v_group_id, /*need to be changed to resource_group_id*/ '/${beanDesc.lowercaseTargetClassName}/export2Csv', 'POST', 0, /*may need to be changed*/'Export2Csv ${beanDesc.targetClassName}s', 0);  
+
+end;
+
+#end

@@ -19,14 +19,14 @@ import com.cicc.gaf.tools.JsonParseException;
 import com.cicc.gaf.tools.JsonUtil;
 import com.cicc.gbo.core.model.ProcessObject;
 import com.cicc.gbo.core.model.TransactionBaseEntity;
-import com.cicc.gbo.core.service.NonAuditableBaseService;
-import com.cicc.gbo.message.model.IncomingMessageEntity;
+import com.cicc.gbo.core.model.TransactionEntity;
+import com.cicc.gbo.message.model.IncomingMessage;
 import com.cicc.gbo.message.parser.FidessaFixParser;
 import com.cicc.gbo.message.producer.TpsMessageProducer;
+import com.cicc.gbo.message.service.IncomingMessageService;
 import com.cicc.gbo.oms.model.Execution;
 import com.cicc.gbo.oms.model.Order;
 import com.cicc.gbo.tps.component.TransactionProcessService;
-import com.cicc.gbo.tps.model.TransactionEntity;
 
 /**
  * @author Guo Hua
@@ -42,7 +42,7 @@ public class GmoMessageListener implements MessageListener {
 	TransactionProcessService transactionProcessService;
 	TpsMessageProducer tpsMessageProducer;
 	@Autowired
-	NonAuditableBaseService incomingMessageEntityService;
+	IncomingMessageService incomingMessageService;
 
 	
 	public String getBrokerUrl() {
@@ -126,18 +126,18 @@ public class GmoMessageListener implements MessageListener {
 		String messageServerMessageId = message.getJMSMessageID();
 		Long messageServerMessageTime = message.getJMSTimestamp();
 		String messageDestinationName = message.getJMSDestination().toString();
-		IncomingMessageEntity incomingMessageEntity = new IncomingMessageEntity();
-		incomingMessageEntity.setIncomingSystemId("Fidessa");
-		incomingMessageEntity.setIncomingSystemName("Fidessa");
-		incomingMessageEntity.setSystemId("TPS");
-		incomingMessageEntity.setSystemName("TPS");
-		incomingMessageEntity.setMessageLob(message.toString());
-		incomingMessageEntity.setMessageContent(msg);
-		incomingMessageEntity.setMessageServerUrl(this.brokerUrl);
-		incomingMessageEntity.setMessageDestinationName(messageDestinationName);
-		incomingMessageEntity.setMessageServerMessageId(messageServerMessageId);
-		incomingMessageEntity.setMessageServerMessageTime(new Date(messageServerMessageTime));
-		incomingMessageEntityService.create(incomingMessageEntity);
+		IncomingMessage incomingMessage = new IncomingMessage();
+		incomingMessage.setIncomingSystemId("Fidessa");
+		incomingMessage.setIncomingSystemName("Fidessa");
+		incomingMessage.setSystemId("TPS");
+		incomingMessage.setSystemName("TPS");
+		incomingMessage.setMessageLob(message.toString());
+		incomingMessage.setMessageContent(msg);
+		incomingMessage.setMessageServerUrl(this.brokerUrl);
+		incomingMessage.setMessageDestinationName(messageDestinationName);
+		incomingMessage.setMessageServerMessageId(messageServerMessageId);
+		incomingMessage.setMessageServerMessageTime(new Date(messageServerMessageTime));
+		incomingMessageService.create(incomingMessage);
 		
 	}
 	

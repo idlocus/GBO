@@ -59,13 +59,13 @@ import quickfix.field.TransactTime;
 import com.cicc.gaf.logger.Logger;
 import com.cicc.gaf.logger.LoggerFactory;
 import com.cicc.gbo.core.model.TransactionBaseEntity;
+import com.cicc.gbo.core.model.TransactionEntity;
 import com.cicc.gbo.core.shared.LogMessageConstants;
 import com.cicc.gbo.core.shared.ProcessConstants;
 import com.cicc.gbo.core.shared.TransactionConstants;
 import com.cicc.gbo.message.shared.CiccFidessaFixField;
 import com.cicc.gbo.oms.model.Execution;
 import com.cicc.gbo.oms.model.Order;
-import com.cicc.gbo.tps.model.TransactionEntity;
 
 /**
  * @author Guo Hua
@@ -164,7 +164,7 @@ public class FidessaFixParser extends FixProtocolParserImpl implements FixProtoc
 
 		if (fixMessage.isSetField(OrderID.FIELD)) {
 			String externalId = fixMessage.getString(OrderID.FIELD);
-			tbe.setOriginalRecordId(externalId);
+			tbe.setParentRecordId(externalId);
 			tbe.setExternalRecordId(externalId);
 		}
 		

@@ -1,6 +1,9 @@
 package com.cicc.gbo.oms.validator;
 
-import com.cicc.gbo.core.model.TransactionBaseEntity;
+import com.cicc.gbo.core.model.ProcessObject;
+import com.cicc.gbo.core.model.TransactionEntity;
+import com.cicc.gbo.core.shared.RecordRemarkConstants;
+import com.cicc.gbo.core.shared.RecordStatus;
 import com.cicc.gbo.core.validator.AbstractValidator;
 
 /**
@@ -10,8 +13,12 @@ import com.cicc.gbo.core.validator.AbstractValidator;
 public class ExchangeValidator extends AbstractValidator {
 
 	@Override
-	public boolean validate(TransactionBaseEntity transactionEntity) {
-		// TODO Auto-generated method stub
+	public boolean validate(TransactionEntity processTransaction, 
+			ProcessObject processObject) {
+		if (processTransaction.getVersusAccountId() == null) {
+			processTransaction.setRecordStatus(RecordStatus.INVALID.name());
+			processTransaction.setRecordRemark(RecordRemarkConstants.INVALID_ACCT_FIELD);
+		}
 		return true;
 	}
 }

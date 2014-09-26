@@ -1,0 +1,58 @@
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+	{
+	border: 1px solid #d3d3d3;
+	font-weight: normal;
+	background: #f2f2f2;
+	/* color: #000; */
+	color: #333333;
+}
+
+.ui-jqgrid .ui-jqgrid-hdiv {
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+.ui-widget-content {
+	border-top: 1px solid #d5d5d5;
+	border-bottom: 1px;
+	border-left: 1px;
+	border-right: 1px;
+	color: #000;
+}
+
+.ui-jqgrid {
+	border-top: 1px solid #d5d5d5;
+	border-bottom: 1px;
+	border-left: 1px solid #d5d5d5;
+	border-right: 1px solid #d5d5d5;
+	color: #000;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+	text-align: center;
+	border-bottom: 1px solid #d5d5d5;
+	border-right: 1px solid #d5d5d5;
+	padding: 10px;
+}
+
+.ui-widget-header {
+	border: 1px solid #aaaaaa;
+	background: #e6e6e6
+		url("../../jquery-ui-1.9.2.custom-smoothness/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png")
+		50% 50% repeat-x;
+	color: #b94327;
+	font-weight: bold;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: Arial,sans-serif;
+    font-size: 1em;
+}
+.ui-jqgrid tr.ui-search-toolbar th { border-top-width: 1px !important; border-top-color: #d3d3d3 !important; border-top-style: ridge !important }
+.ui-jqgrid .ui-jqgrid-htable th {
+    height: 27px;
+    padding: 0 2px;
+}
+.ui-jqgrid {
+    font-size: 13px;
+}

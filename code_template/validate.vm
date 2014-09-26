@@ -1,0 +1,42 @@
+<script type="text/javascript">$(function() {
+    jQuery.validator.setDefaults({
+          success: "valid"
+     });
+    $("#${beanDesc.lowercaseTargetClassName}InputForm").validate({
+      submitHandler: function(form) {
+            commit${beanDesc.targetClassName}();
+        },
+        rules: {
+#set($propertyNum=0)
+#foreach( $propertyDesc in ${beanDesc.propertyList} )##
+#set($annoCount = ${propertyDesc.annoDescList.size()})##
+#if ($annoCount != 0 && ${propertyDesc.name} != 'entityId' && ${propertyDesc.name} != 'versionNumber' && ${propertyDesc.name} != 'createdBy' && ${propertyDesc.name} != 'insertTime' && ${propertyDesc.name} != 'updatedBy' && ${propertyDesc.name} != 'lastUpdateTime')##                 
+#set($propertyNum = $propertyNum +1)
+           ${propertyDesc.name}: {
+#set($num=0)
+#foreach($annotation in ${propertyDesc.annoDescList})##
+#set($num = $num + 1)
+#if($num != $annoCount)##
+                   ${annotation.key} : ${annotation.value},
+#else##
+                   ${annotation.key} : ${annotation.value}
+#end##
+#end##
+#if($propertyNum != ${beanDesc.annoPropertyCount})##
+               },
+#else##
+               }
+#end##
+#end##
+#end##
+        },
+	errorPlacement: function(error, element) {
+          if(element.parent().children().length == 1){
+              error.insertAfter(element);
+          }else{
+              error.insertAfter(element.next());
+          }
+        }
+    });
+})
+</script>
